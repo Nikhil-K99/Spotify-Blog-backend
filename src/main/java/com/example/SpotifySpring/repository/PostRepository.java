@@ -1,12 +1,10 @@
 package com.example.SpotifySpring.repository;
 
-import com.example.SpotifySpring.model.User;
+import com.example.SpotifySpring.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Override
-    boolean existsById(String s);
 }

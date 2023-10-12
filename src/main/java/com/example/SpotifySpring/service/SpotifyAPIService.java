@@ -1,16 +1,16 @@
 package com.example.SpotifySpring.service;
 
+import com.example.SpotifySpring.model.User;
 import lombok.RequiredArgsConstructor;
 import org.apache.hc.core5.http.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
+import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,14 +20,11 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class SpotifyAPIService {
 
-    private String scope = "user-top-read user-read-recently-played user-library-read user-read-email";
+    private final static String scope = "user-top-read user-read-recently-played user-library-read user-read-email";
     private Instant tokenExpirationTime;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private SpotifyApi spotifyApi;
+//    @Autowired
+    private final SpotifyApi spotifyApi;
 
 
     public String logIn(){
@@ -83,6 +80,21 @@ public class SpotifyAPIService {
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    public User getCurrentUser() throws IOException, ParseException, SpotifyWebApiException {
+        checkTokenExpiration();
+        GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile()
+                .build();
+
+        se.michaelthelin.spotify.model_objects.specification.User spotifyUser = getCurrentUsersProfileRequest.execute();
+        User currentUser = new User();
+        currentUser.setUserName(spotifyUser.getDisplayName());
+        currentUser.setId(spotifyUser.getId());
+        currentUser.setEmail(spotifyUser.getEmail());
+
+
+        return currentUser;
     }
 
 }

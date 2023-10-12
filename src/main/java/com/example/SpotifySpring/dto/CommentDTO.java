@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
-
+public class CommentDTO {
+    private Long id;
+    private Long postId;
+    private String duration;
+    private String text;
     private String userName;
-    private String email;
-    private String profilePicture;
-    private String id;
-
-
 }
