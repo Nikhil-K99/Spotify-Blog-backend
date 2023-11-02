@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public void saveNewUser(User user){
-        if (!userRepository.existsById(user.getId())){
+        if (!userRepository.existsById(user.getUserId())){
             userRepository.save(user);
         }
     }

@@ -1,6 +1,6 @@
 package com.example.SpotifySpring.enums;
 
-public enum SubjectType {
+public enum TopicType {
     ALBUM,
     ARTIST,
     SONG;

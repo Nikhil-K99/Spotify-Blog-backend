@@ -89,8 +89,8 @@ public class SpotifyAPIService {
 
         se.michaelthelin.spotify.model_objects.specification.User spotifyUser = getCurrentUsersProfileRequest.execute();
         User currentUser = new User();
-        currentUser.setUserName(spotifyUser.getDisplayName());
-        currentUser.setId(spotifyUser.getId());
+        currentUser.setUsername(spotifyUser.getDisplayName());
+        currentUser.setUserId(spotifyUser.getId());
         currentUser.setEmail(spotifyUser.getEmail());
 
 

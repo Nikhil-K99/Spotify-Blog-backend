@@ -1,6 +1,5 @@
 package com.example.SpotifySpring.model;
 
-import com.example.SpotifySpring.enums.SubjectType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,9 +20,10 @@ public class Post {
     private String description;
     private Integer voteCount = 0;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spotifyUserId", referencedColumnName = "spotifyUserId")
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
     private Instant createdDate;
-    private SubjectType subjectType;
-    private Long subjectId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topicSpotifyId", referencedColumnName = "topicSpotifyId")
+    private Topic topic;
 }

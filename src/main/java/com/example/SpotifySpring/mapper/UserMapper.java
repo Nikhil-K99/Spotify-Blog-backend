@@ -22,15 +22,15 @@ public class UserMapper {
 
     public User map(UserDTO userDTO){
         User user = new User();
-        user.setUserName(userDTO.getUserName());
-        user.setId(userDTO.getId());
+        user.setUsername(userDTO.getUserName());
+        user.setUserId(userDTO.getUserId());
         user.setEmail(userDTO.getEmail());
 
         return user;
     }
 
     public UserDTO maptoDTO(User user) throws SpotifyWebApiException, IOException, ParseException {
-        String userId = user.getId();
+        String userId = user.getUserId();
 
         spotifyAPIService.checkTokenExpiration();
         GetUsersProfileRequest getUsersProfileRequest = spotifyApi.getUsersProfile(userId)
@@ -39,8 +39,8 @@ public class UserMapper {
         se.michaelthelin.spotify.model_objects.specification.User spotifyUser = getUsersProfileRequest.execute();
         String userImage = Arrays.stream(spotifyUser.getImages()).findFirst().get().getUrl();
         UserDTO userDTO = new UserDTO();
-        userDTO.setId(userId);
-        userDTO.setUserName(user.getUserName());
+        userDTO.setUserId(userId);
+        userDTO.setUserName(user.getUsername());
         userDTO.setEmail(user.getEmail());
         userDTO.setProfilePicture(userImage);
 

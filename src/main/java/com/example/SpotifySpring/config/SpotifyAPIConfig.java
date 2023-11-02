@@ -18,7 +18,7 @@ public class SpotifyAPIConfig {
     @Value("${spotify.client.secret}")
     private String client_secret;
 
-    private URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/api/auth/get-user-code");
+    private URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/api/v1/auth/get-user-code");
 
     @Bean
     public SpotifyApi spotifyApi(){

@@ -12,7 +12,7 @@ public class UserDTO {
     private String userName;
     private String email;
     private String profilePicture;
-    private String id;
+    private String userId;
 
 
 }
