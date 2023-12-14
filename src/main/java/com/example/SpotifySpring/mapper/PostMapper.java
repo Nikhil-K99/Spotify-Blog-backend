@@ -9,7 +9,7 @@ import com.example.SpotifySpring.model.User;
 import com.example.SpotifySpring.model.Vote;
 import com.example.SpotifySpring.repository.CommentRepository;
 import com.example.SpotifySpring.repository.VoteRepository;
-import com.example.SpotifySpring.service.SpotifyAPIService;
+import com.example.SpotifySpring.service.SpotifyAPIAuthService;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 import org.apache.hc.core5.http.ParseException;
 import org.mapstruct.Mapper;
@@ -25,12 +25,12 @@ public abstract class PostMapper {
 
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
-    private final SpotifyAPIService spotifyAPIService;
+    private final SpotifyAPIAuthService spotifyAPIAuthService;
 
-    protected PostMapper(CommentRepository commentRepository, VoteRepository voteRepository, SpotifyAPIService spotifyAPIService) {
+    protected PostMapper(CommentRepository commentRepository, VoteRepository voteRepository, SpotifyAPIAuthService spotifyAPIAuthService) {
         this.commentRepository = commentRepository;
         this.voteRepository = voteRepository;
-        this.spotifyAPIService = spotifyAPIService;
+        this.spotifyAPIAuthService = spotifyAPIAuthService;
     }
 
     @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
@@ -53,14 +53,14 @@ public abstract class PostMapper {
     String getDuration(Post post) {
         return TimeAgo.using(post.getCreatedDate().toEpochMilli());
     }
-
+ 
     Integer getCommentCount(Post post) {
         return commentRepository.findByPost(post).size();
     }
 
     private boolean checkVoteType(Post post, VoteType voteType) throws IOException, ParseException, SpotifyWebApiException {
 
-        Optional<Vote> voteForPostByUser = voteRepository.findVoteByPostAndUser(post, spotifyAPIService.getCurrentUser());
+        Optional<Vote> voteForPostByUser = voteRepository.findVoteByPostAndUser(post, spotifyAPIAuthService.getCurrentUser());
         return voteForPostByUser.filter(vote -> vote.getVoteType().equals(voteType)).isPresent();
     }
 

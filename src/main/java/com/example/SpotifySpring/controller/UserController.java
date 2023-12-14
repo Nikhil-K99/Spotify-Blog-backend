@@ -24,8 +24,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("{id}")
-    public ResponseEntity<UserDTO> getUserbyId(@PathVariable String id) throws IOException, ParseException, SpotifyWebApiException {
-        return status(HttpStatus.OK).body(userService.getUserbyId(id));
+    public ResponseEntity<UserDTO> getUserById(@PathVariable String id) throws IOException, ParseException, SpotifyWebApiException {
+        return status(HttpStatus.OK).body(userService.getUserById(id));
     }
 
 

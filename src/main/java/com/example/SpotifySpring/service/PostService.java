@@ -29,7 +29,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final TopicRepository topicRepository;
     private final UserRepository userRepository;
-    private final SpotifyAPIService spotifyAPIService;
+    private final SpotifyAPIAuthService spotifyAPIAuthService;
     private final PostMapper postMapper;
 
     public void save(PostRequestDTO postRequestDTO) throws IOException, ParseException, SpotifyWebApiException {
@@ -40,11 +40,11 @@ public class PostService {
             topic.setTopicSpotifyId(postRequestDTO.getTopicSpotifyId());
 
             topicRepository.save(topic);
-            postRepository.save(postMapper.map(postRequestDTO, topic, spotifyAPIService.getCurrentUser()));
+            postRepository.save(postMapper.map(postRequestDTO, topic, spotifyAPIAuthService.getCurrentUser()));
         } else {
             Topic topic = topicRepository.findByTopicSpotifyIdAndTopicType(postRequestDTO.getTopicSpotifyId(), postRequestDTO.getTopicType())
                     .orElseThrow(() -> new TopicNotFoundException(postRequestDTO.getTopicType().toString() + " " + postRequestDTO.getTopicSpotifyId() + " not found."));
-            postRepository.save(postMapper.map(postRequestDTO, topic, spotifyAPIService.getCurrentUser()));
+            postRepository.save(postMapper.map(postRequestDTO, topic, spotifyAPIAuthService.getCurrentUser()));
         }
     }
 

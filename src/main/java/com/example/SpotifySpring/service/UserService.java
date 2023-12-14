@@ -19,9 +19,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserDTO getUserbyId(String id) throws SpotifyWebApiException, IOException, ParseException {
+    public UserDTO getUserById(String id) throws SpotifyWebApiException, IOException, ParseException {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User: " + id + " not found"));
+                .orElseThrow(() -> new UserNotFoundException("User " + id + " not found"));
         return userMapper.maptoDTO(user);
     }
 

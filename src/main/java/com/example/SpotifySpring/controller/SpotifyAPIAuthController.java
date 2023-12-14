@@ -1,7 +1,7 @@
 package com.example.SpotifySpring.controller;
 
 import com.example.SpotifySpring.model.User;
-import com.example.SpotifySpring.service.SpotifyAPIService;
+import com.example.SpotifySpring.service.SpotifyAPIAuthService;
 import com.example.SpotifySpring.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -21,19 +21,19 @@ import static org.springframework.http.ResponseEntity.status;
 @AllArgsConstructor
 public class SpotifyAPIAuthController {
 
-    private final SpotifyAPIService spotifyAPIService;
+    private final SpotifyAPIAuthService spotifyAPIAuthService;
     private final UserService userService;
     @GetMapping("login")
     @ResponseBody
     public ResponseEntity<String> login() {
-        return status(HttpStatus.OK).body(spotifyAPIService.logIn());
+        return status(HttpStatus.OK).body(spotifyAPIAuthService.logIn());
     }
 
     @GetMapping("get-user-code")
     public void getSpotifyUserCode(@RequestParam("code") String userCode, HttpServletResponse response) throws IOException, ParseException, SpotifyWebApiException {
 
-            spotifyAPIService.getUserCode(userCode);
-            User user = spotifyAPIService.getCurrentUser();
+            spotifyAPIAuthService.getUserCode(userCode);
+            User user = spotifyAPIAuthService.getCurrentUser();
             userService.saveNewUser(user);
 
         response.sendRedirect("http://localhost:4200/home");

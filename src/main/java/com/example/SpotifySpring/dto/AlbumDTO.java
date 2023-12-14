@@ -1,6 +1,5 @@
 package com.example.SpotifySpring.dto;
 
-import com.example.SpotifySpring.enums.VoteType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VoteDTO {
-    private VoteType voteType;
-    private Long postId;
+public class AlbumDTO {
+
+    private String name;
+    private String artistName;
+    private String pictureUrl;
+    private Long topicId;
+    private String spotifyId;
 }

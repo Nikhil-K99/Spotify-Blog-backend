@@ -2,7 +2,7 @@ package com.example.SpotifySpring.mapper;
 
 import com.example.SpotifySpring.dto.UserDTO;
 import com.example.SpotifySpring.model.User;
-import com.example.SpotifySpring.service.SpotifyAPIService;
+import com.example.SpotifySpring.service.SpotifyAPIAuthService;
 import lombok.RequiredArgsConstructor;
 import org.apache.hc.core5.http.ParseException;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class UserMapper {
 
     private final SpotifyApi spotifyApi;
-    private final SpotifyAPIService spotifyAPIService;
+    private final SpotifyAPIAuthService spotifyAPIAuthService;
 
     public User map(UserDTO userDTO){
         User user = new User();
@@ -32,7 +32,7 @@ public class UserMapper {
     public UserDTO maptoDTO(User user) throws SpotifyWebApiException, IOException, ParseException {
         String userId = user.getUserId();
 
-        spotifyAPIService.checkTokenExpiration();
+        spotifyAPIAuthService.checkTokenExpiration();
         GetUsersProfileRequest getUsersProfileRequest = spotifyApi.getUsersProfile(userId)
                 .build();
 

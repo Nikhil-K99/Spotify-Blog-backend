@@ -18,7 +18,7 @@ import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
-public class SpotifyAPIService {
+public class SpotifyAPIAuthService {
 
     private final static String scope = "user-top-read user-read-recently-played user-library-read user-read-email";
     private Instant tokenExpirationTime;
