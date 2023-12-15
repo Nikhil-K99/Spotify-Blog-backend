@@ -55,7 +55,7 @@ public abstract class PostMapper {
     }
  
     Integer getCommentCount(Post post) {
-        return commentRepository.findByPost(post).size();
+        return commentRepository.findAllByPost(post).size();
     }
 
     private boolean checkVoteType(Post post, VoteType voteType) throws IOException, ParseException, SpotifyWebApiException {
