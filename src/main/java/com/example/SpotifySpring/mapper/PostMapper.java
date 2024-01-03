@@ -34,7 +34,7 @@ public abstract class PostMapper {
     }
 
     @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
-    @Mapping(target = "topic", source = "target")
+    @Mapping(target = "topic", source = "topic")
     @Mapping(target = "voteCount", constant = "0")
     @Mapping(target = "user", source = "user")
     public abstract Post map(PostRequestDTO postRequestDTO, Topic topic, User user);
