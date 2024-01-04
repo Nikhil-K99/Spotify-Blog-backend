@@ -44,7 +44,7 @@ public class PostController {
         return status(HttpStatus.OK).body(postService.getPostsByUsername(username));
     }
 
-    @GetMapping("by-topic/{topicId}")
+    @GetMapping("/by-topic/{topicId}")
     public ResponseEntity<List<PostResponseDTO>> getPostsByTopic(@PathVariable Long topicId) {
         return status(HttpStatus.OK).body(postService.getPostsByTopic(topicId));
     }
