@@ -21,7 +21,7 @@ public abstract class CommentMapper {
 
     @Mapping(target = "id", source = "commentId")
     @Mapping(target = "postId", expression = "java(comment.getPost().getPostId())")
-    @Mapping(target = "userName", source = "comment.getUser().getUsername")
+    @Mapping(target = "userName", expression = "java(comment.getUser().getUsername())")
     @Mapping(target = "duration", expression = "java(getDuration(comment))")
     public abstract CommentDTO mapToDTO(Comment comment);
 

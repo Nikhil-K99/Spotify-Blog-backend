@@ -19,6 +19,7 @@ import static org.springframework.http.ResponseEntity.status;
 @RestController
 @RequestMapping("api/v1/comments")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class CommentController {
 
     private final CommentService commentService;

@@ -14,6 +14,7 @@ import com.github.marlonlom.utilities.timeago.TimeAgo;
 import org.apache.hc.core5.http.ParseException;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
 import java.io.IOException;
@@ -23,15 +24,18 @@ import java.util.Optional;
 @Mapper(componentModel = "spring")
 public abstract class PostMapper {
 
-    private final CommentRepository commentRepository;
-    private final VoteRepository voteRepository;
-    private final SpotifyAPIAuthService spotifyAPIAuthService;
+    @Autowired
+   CommentRepository commentRepository;
+    @Autowired
+    VoteRepository voteRepository;
+    @Autowired
+    SpotifyAPIAuthService spotifyAPIAuthService;
 
-    protected PostMapper(CommentRepository commentRepository, VoteRepository voteRepository, SpotifyAPIAuthService spotifyAPIAuthService) {
-        this.commentRepository = commentRepository;
-        this.voteRepository = voteRepository;
-        this.spotifyAPIAuthService = spotifyAPIAuthService;
-    }
+//    protected PostMapper(CommentRepository commentRepository, VoteRepository voteRepository, SpotifyAPIAuthService spotifyAPIAuthService) {
+//        this.commentRepository = commentRepository;
+//        this.voteRepository = voteRepository;
+//        this.spotifyAPIAuthService = spotifyAPIAuthService;
+//    }
 
     @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
     @Mapping(target = "topic", source = "topic")
@@ -40,14 +44,14 @@ public abstract class PostMapper {
     public abstract Post map(PostRequestDTO postRequestDTO, Topic topic, User user);
 
 
-    @Mapping(target = "topicSpotifyId", source = "topic.topicSpotifyId")
+    @Mapping(target = "topicId", source = "topic.topicId")
     @Mapping(target = "topicType", source = "topic.topicType")
     @Mapping(target = "username", source = "user.username")
-    @Mapping(target = "duration", source = "java(getDuration(post))")
-    @Mapping(target = "commentCount", source = "java(getCommentCount(post))")
-    @Mapping(target = "upVote", source = "java(isPostUpVoted(post))")
-    @Mapping(target = "downVote", source = "java(isPostDownVoted(post))")
-    public abstract PostResponseDTO maptoDTO(Post post);
+    @Mapping(target = "duration", expression = "java(getDuration(post))")
+    @Mapping(target = "commentCount", expression = "java(getCommentCount(post))")
+    @Mapping(target = "upVote", expression = "java(isPostUpVoted(post))")
+    @Mapping(target = "downVote", expression = "java(isPostDownVoted(post))")
+    public abstract PostResponseDTO mapToDTO(Post post) throws IOException, ParseException, SpotifyWebApiException;
 
 
     String getDuration(Post post) {
@@ -60,7 +64,7 @@ public abstract class PostMapper {
 
     private boolean checkVoteType(Post post, VoteType voteType) throws IOException, ParseException, SpotifyWebApiException {
 
-        Optional<Vote> voteForPostByUser = voteRepository.findVoteByPostAndUser(post, spotifyAPIAuthService.getCurrentUser());
+        Optional<Vote> voteForPostByUser = voteRepository.findTopByPostAndUserOrderByVoteIdDesc(post, spotifyAPIAuthService.getCurrentUser());
         return voteForPostByUser.filter(vote -> vote.getVoteType().equals(voteType)).isPresent();
     }
 

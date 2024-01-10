@@ -19,6 +19,7 @@ import static org.springframework.http.ResponseEntity.status;
 @RestController
 @RequestMapping("api/v1/posts")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class PostController {
 
     private final PostService postService;
@@ -30,7 +31,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponseDTO> getPost(@PathVariable Long id) {
+    public ResponseEntity<PostResponseDTO> getPost(@PathVariable Long id) throws IOException, ParseException, SpotifyWebApiException {
         return status(HttpStatus.OK).body(postService.getPost(id));
     }
 

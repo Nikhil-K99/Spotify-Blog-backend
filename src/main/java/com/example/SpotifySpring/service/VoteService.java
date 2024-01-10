@@ -30,7 +30,7 @@ public class VoteService {
     public void vote(VoteDTO voteDTO) throws IOException, ParseException, SpotifyWebApiException {
         Post post = postRepository.findById(voteDTO.getPostId())
                 .orElseThrow(() -> new PostNotFoundException("Post not found with ID " + voteDTO.getPostId()));
-        Optional<Vote> voteByPostAndUser = voteRepository.findTopByByPostAndUserOrderByVoteIdDesc(post, spotifyAPIAuthService.getCurrentUser());
+        Optional<Vote> voteByPostAndUser = voteRepository.findTopByPostAndUserOrderByVoteIdDesc(post, spotifyAPIAuthService.getCurrentUser());
         if (voteByPostAndUser.isPresent() && voteByPostAndUser.equals(voteDTO.getVoteType())) {
             throw new VoteAlreadyExistsException("You have already " + voteDTO.getVoteType().toString() + "'d this post.");
         }

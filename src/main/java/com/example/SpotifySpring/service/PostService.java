@@ -48,16 +48,22 @@ public class PostService {
         }
     }
 
-    public PostResponseDTO getPost(Long postId) {
+    public PostResponseDTO getPost(Long postId) throws IOException, ParseException, SpotifyWebApiException {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("Post " + postId.toString() + "not found."));
-        return postMapper.maptoDTO(post);
+        return postMapper.mapToDTO(post);
     }
 
     public List<PostResponseDTO> getAllPosts() {
         return postRepository.findAll()
                 .stream()
-                .map(postMapper::maptoDTO)
+                .map(post -> {
+                    try {
+                        return postMapper.mapToDTO(post);
+                    } catch (IOException | ParseException | SpotifyWebApiException e ) {
+                        throw new RuntimeException( "Error mapping to PostResponseDTO",e);
+                    }
+                })
                 .collect(toList());
     }
 
@@ -67,7 +73,13 @@ public class PostService {
 
         return postRepository.findByUser(user)
                 .stream()
-                .map(postMapper::maptoDTO)
+                .map(post -> {
+                    try {
+                        return postMapper.mapToDTO(post);
+                    } catch (IOException | ParseException | SpotifyWebApiException e ) {
+                        throw new RuntimeException( "Error mapping to PostResponseDTO",e);
+                    }
+                })
                 .collect(toList());
     }
 
@@ -76,7 +88,13 @@ public class PostService {
                 .orElseThrow(() -> new TopicNotFoundException( "Topic " + topicId.toString() + " not found."));
         return postRepository.findAllByTopic(topic)
                 .stream()
-                .map(postMapper::maptoDTO)
+                .map(post -> {
+                    try {
+                        return postMapper.mapToDTO(post);
+                    } catch (IOException | ParseException | SpotifyWebApiException e ) {
+                        throw new RuntimeException( "Error mapping to PostResponseDTO",e);
+                    }
+                })
                 .collect(toList());
     }
 

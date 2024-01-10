@@ -38,7 +38,7 @@ public class SpotifyAPIAuthService {
     }
 
 
-    public void getUserCode(String userCode) throws IOException{
+    public void getUserCode(String userCode) throws IOException {
         AuthorizationCodeRequest authorizationCodeRequest = spotifyApi.authorizationCode(userCode).build();
 
         try{

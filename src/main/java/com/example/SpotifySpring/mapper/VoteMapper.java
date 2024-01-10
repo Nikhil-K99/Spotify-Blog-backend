@@ -4,16 +4,17 @@ import com.example.SpotifySpring.dto.VoteDTO;
 import com.example.SpotifySpring.model.Post;
 import com.example.SpotifySpring.model.User;
 import com.example.SpotifySpring.model.Vote;
-import com.example.SpotifySpring.service.SpotifyAPIAuthService;
-import lombok.AllArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
-@AllArgsConstructor
+@Mapper(componentModel = "spring")
 public abstract class VoteMapper {
 
-    private final SpotifyAPIAuthService spotifyAPIAuthService;
+//    private final SpotifyAPIAuthService spotifyAPIAuthService;
+//
+//    protected VoteMapper(SpotifyAPIAuthService spotifyAPIAuthService) {
+//        this.spotifyAPIAuthService = spotifyAPIAuthService;
+//    }
 
 
     @Mapping(target = "post", source = "post")
