@@ -11,4 +11,5 @@ public class TopicSearchDTO {
 
     private String name;
     private String pictureURL;
+    private String spotifyId;
 }

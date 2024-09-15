@@ -66,6 +66,7 @@ public class TopicSearchService {
 
         topicSearchDTO.setName(artist.getName());
         topicSearchDTO.setPictureURL(Arrays.stream(artist.getImages()).findFirst().get().getUrl());
+        topicSearchDTO.setSpotifyId(artist.getId());
 
         return topicSearchDTO;
     }
@@ -75,6 +76,7 @@ public class TopicSearchService {
 
         topicSearchDTO.setName(albumSimplified.getName());
         topicSearchDTO.setPictureURL(Arrays.stream(albumSimplified.getImages()).findFirst().get().getUrl());
+        topicSearchDTO.setSpotifyId(albumSimplified.getId());
 
         return topicSearchDTO;
     }
@@ -84,6 +86,7 @@ public class TopicSearchService {
 
         topicSearchDTO.setName(track.getName());
         topicSearchDTO.setPictureURL(Arrays.stream(track.getAlbum().getImages()).findFirst().get().getUrl());
+        topicSearchDTO.setSpotifyId(track.getId());
 
         return topicSearchDTO;
     }
