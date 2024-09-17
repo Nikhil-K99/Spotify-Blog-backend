@@ -27,6 +27,8 @@ public class TopicSearchService {
 
     public List<TopicSearchDTO> getSearchedArtist(String artistQuery) throws IOException, ParseException, SpotifyWebApiException {
 
+        spotifyAPIAuthService.checkTokenExpiration();
+
         SearchArtistsRequest searchArtistsRequest = spotifyApi.searchArtists(artistQuery)
                 .limit(5)
                 .build();
@@ -39,6 +41,8 @@ public class TopicSearchService {
 
     public List<TopicSearchDTO> getSearchedAlbum(String albumQuery) throws IOException, ParseException, SpotifyWebApiException {
 
+        spotifyAPIAuthService.checkTokenExpiration();
+
         SearchAlbumsRequest searchAlbumsRequest = spotifyApi.searchAlbums(albumQuery)
                 .limit(5)
                 .build();
@@ -50,6 +54,8 @@ public class TopicSearchService {
     }
 
     public List<TopicSearchDTO> getSearchedTrack(String trackQuery) throws IOException, ParseException, SpotifyWebApiException {
+
+        spotifyAPIAuthService.checkTokenExpiration();
 
         SearchTracksRequest searchTracksRequest = spotifyApi.searchTracks(trackQuery)
                 .limit(5)

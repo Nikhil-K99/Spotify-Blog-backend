@@ -61,11 +61,13 @@ public class SpotifyAPIAuthService {
 
         // If the token is about to expire (less than 60 seconds remaining), refresh it
         if (currentTime.isAfter(tokenExpirationTime.minusSeconds(60))){
+            System.out.println("Token about to expire");
             refreshToken();
         }
     }
 
     public void refreshToken(){
+        System.out.println("Refreshing token");
         AuthorizationCodeRefreshRequest authorizationCodeRefreshRequest = spotifyApi.authorizationCodeRefresh()
                 .build();
 
