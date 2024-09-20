@@ -20,4 +20,5 @@ public class PostResponseDTO {
     private String duration;
     private boolean upVote;
     private boolean downVote;
-}
+    }
+

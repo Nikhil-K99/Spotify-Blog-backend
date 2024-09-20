@@ -4,8 +4,11 @@ package com.example.SpotifySpring.controller;
 import com.example.SpotifySpring.dto.PostRequestDTO;
 import com.example.SpotifySpring.dto.PostResponseDTO;
 import com.example.SpotifySpring.service.PostService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.apache.hc.core5.http.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,8 @@ import static org.springframework.http.ResponseEntity.status;
 public class PostController {
 
     private final PostService postService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     @PostMapping
     public ResponseEntity<Void> createPost(@RequestBody PostRequestDTO postRequestDTO) throws IOException, ParseException, SpotifyWebApiException {
@@ -39,6 +44,7 @@ public class PostController {
     public  ResponseEntity<List<PostResponseDTO>> getAllPosts() {
         return status(HttpStatus.OK).body(postService.getAllPosts());
     }
+
 
     @GetMapping("/by-user/{username}")
     public ResponseEntity<List<PostResponseDTO>> getPostsByUsername(@PathVariable String username) {
