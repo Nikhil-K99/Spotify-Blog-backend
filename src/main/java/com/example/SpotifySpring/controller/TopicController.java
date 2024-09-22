@@ -49,7 +49,7 @@ public class TopicController {
         return status(HttpStatus.OK).body(topicService.getAlbumById(id));
     }
 
-    @GetMapping("/artists/{id}")
+    @GetMapping("/tracks/{id}")
     public ResponseEntity<TrackDTO> getTrack(@PathVariable Long id) throws ParseException, SpotifyWebApiException, IOException {
         return status(HttpStatus.OK).body(topicService.getTrackById(id));
     }
