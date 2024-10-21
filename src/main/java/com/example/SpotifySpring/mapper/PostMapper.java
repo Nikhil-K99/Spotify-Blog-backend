@@ -2,6 +2,7 @@ package com.example.SpotifySpring.mapper;
 
 import com.example.SpotifySpring.dto.PostRequestDTO;
 import com.example.SpotifySpring.dto.PostResponseDTO;
+import com.example.SpotifySpring.dto.TopicDTO;
 import com.example.SpotifySpring.enums.VoteType;
 import com.example.SpotifySpring.model.Post;
 import com.example.SpotifySpring.model.Topic;
@@ -31,6 +32,7 @@ public class PostMapper {
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
     private final SpotifyAPIAuthService spotifyAPIAuthService;
+    private final TopicMapper topicMapper;
     private static final Logger logger = LoggerFactory.getLogger(PostMapper.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -53,14 +55,17 @@ public class PostMapper {
         postResponseDTO.setPostId(post.getPostId());
         postResponseDTO.setPostName(post.getPostName());
         postResponseDTO.setDescription(post.getDescription());
-        postResponseDTO.setTopicType(post.getTopic().getTopicType());
-        postResponseDTO.setTopicId(post.getTopic().getTopicId());
+//        postResponseDTO.setTopicType(post.getTopic().getTopicType());
+//        postResponseDTO.setTopicId(post.getTopic().getTopicId());
         postResponseDTO.setUsername(post.getUser().getUsername());
         postResponseDTO.setVoteCount(post.getVoteCount());
         postResponseDTO.setCommentCount(getCommentCount(post));
         postResponseDTO.setDuration(getDuration(post));
         postResponseDTO.setUpVote(isPostUpVoted(post));
         postResponseDTO.setDownVote(isPostDownVoted(post));
+
+        TopicDTO topicDTO = topicMapper.mapToDTO(post.getTopic());
+        postResponseDTO.setTopicData(topicDTO);
 
         try {
             String json = objectMapper.writeValueAsString(postResponseDTO);

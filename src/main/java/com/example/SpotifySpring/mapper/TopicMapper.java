@@ -1,9 +1,8 @@
 package com.example.SpotifySpring.mapper;
 
 
-import com.example.SpotifySpring.dto.AlbumDTO;
-import com.example.SpotifySpring.dto.ArtistDTO;
-import com.example.SpotifySpring.dto.TrackDTO;
+import com.example.SpotifySpring.dto.TopicDTO;
+import com.example.SpotifySpring.enums.TopicType;
 import com.example.SpotifySpring.model.Topic;
 import com.example.SpotifySpring.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,50 +28,66 @@ public class TopicMapper {
     private final TopicRepository topicRepository;
 
 
-    public ArtistDTO mapToArtist(Topic topic) throws IOException, ParseException, SpotifyWebApiException {
-        ArtistDTO artistDTO = new ArtistDTO();
-        artistDTO.setTopicId(topic.getTopicId());
+    public TopicDTO mapToArtist(Topic topic) throws IOException, ParseException, SpotifyWebApiException {
+        TopicDTO topicDTO = new TopicDTO();
+        topicDTO.setTopicId(topic.getTopicId());
+        topicDTO.setTopicType(TopicType.ARTIST);
 
         GetArtistRequest getArtistRequest = spotifyApi.getArtist(topic.getTopicSpotifyId()).build();
         Artist artist = getArtistRequest.execute();
 
-        artistDTO.setName(artist.getName());
-        artistDTO.setPictureUrl(Arrays.stream(artist.getImages()).findFirst().get().getUrl());
-        artistDTO.setSpotifyId(artist.getId());
+        topicDTO.setArtistName(artist.getName());
+        topicDTO.setPictureUrl(Arrays.stream(artist.getImages()).findFirst().get().getUrl());
+        topicDTO.setSpotifyId(artist.getId());
 
-        return artistDTO;
+        return topicDTO;
     }
 
-    public AlbumDTO mapToAlbum(Topic topic) throws IOException, ParseException, SpotifyWebApiException {
-        AlbumDTO albumDTO = new AlbumDTO();
-        albumDTO.setTopicId(topic.getTopicId());
+    public TopicDTO mapToAlbum(Topic topic) throws IOException, ParseException, SpotifyWebApiException {
+        TopicDTO topicDTO = new TopicDTO();
+        topicDTO.setTopicId(topic.getTopicId());
+        topicDTO.setTopicType(TopicType.ALBUM);
 
         GetAlbumRequest getAlbumRequest = spotifyApi.getAlbum(topic.getTopicSpotifyId()).build();
         Album album = getAlbumRequest.execute();
 
-        albumDTO.setName(album.getName());
-        albumDTO.setArtistName(Arrays.stream(album.getArtists()).findFirst().get().getName());
-        albumDTO.setPictureUrl(Arrays.stream(album.getImages()).findFirst().get().getUrl());
-        albumDTO.setSpotifyId(album.getId());
+        topicDTO.setAlbumName(album.getName());
+        topicDTO.setArtistName(Arrays.stream(album.getArtists()).findFirst().get().getName());
+        topicDTO.setPictureUrl(Arrays.stream(album.getImages()).findFirst().get().getUrl());
+        topicDTO.setSpotifyId(album.getId());
 
-        return albumDTO;
+        return topicDTO;
     }
 
-    public TrackDTO mapToTrack(Topic topic) throws IOException, ParseException, SpotifyWebApiException {
-        TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setTopicId(topic.getTopicId());
+    public TopicDTO mapToTrack(Topic topic) throws IOException, ParseException, SpotifyWebApiException {
+        TopicDTO topicDTO = new TopicDTO();
+        topicDTO.setTopicId(topic.getTopicId());
+        topicDTO.setTopicType(TopicType.TRACK);
 
         GetTrackRequest getTrackRequest = spotifyApi.getTrack(topic.getTopicSpotifyId()).build();
         Track track = getTrackRequest.execute();
 
-        trackDTO.setName(track.getName());
-        trackDTO.setArtistName(Arrays.stream(track.getArtists()).findFirst().get().getName());
-        trackDTO.setAlbumName(track.getAlbum().getName());
-        trackDTO.setPictureUrl(Arrays.stream(track.getAlbum().getImages()).findFirst().get().getUrl());
-        trackDTO.setSpotifyId(track.getId());
+        topicDTO.setTrackName(track.getName());
+        topicDTO.setArtistName(Arrays.stream(track.getArtists()).findFirst().get().getName());
+        topicDTO.setAlbumName(track.getAlbum().getName());
+        topicDTO.setPictureUrl(Arrays.stream(track.getAlbum().getImages()).findFirst().get().getUrl());
+        topicDTO.setSpotifyId(track.getId());
 
-        return trackDTO;
+        return topicDTO;
     }
 
+    public TopicDTO mapToDTO(Topic topic) throws ParseException, SpotifyWebApiException, IOException {
+        TopicType topicType = topic.getTopicType();
+        switch (topicType) {
+            case ARTIST:
+               return mapToArtist(topic);
+            case ALBUM:
+                return mapToAlbum(topic);
+            case TRACK:
+               return mapToTrack(topic);
+            default:
+                throw new IllegalArgumentException("Unknown topic type: " + topicType);
+        }
+    }
 
 }

@@ -1,8 +1,6 @@
 package com.example.SpotifySpring.service;
 
-import com.example.SpotifySpring.dto.AlbumDTO;
-import com.example.SpotifySpring.dto.ArtistDTO;
-import com.example.SpotifySpring.dto.TrackDTO;
+import com.example.SpotifySpring.dto.TopicDTO;
 import com.example.SpotifySpring.enums.TopicType;
 import com.example.SpotifySpring.exceptions.TopicNotFoundException;
 import com.example.SpotifySpring.mapper.TopicMapper;
@@ -26,7 +24,7 @@ public class TopicService {
     private final TopicMapper topicMapper;
 
 
-    public List<ArtistDTO> getAllArtists() {
+    public List<TopicDTO> getAllArtists() {
         return topicRepository.findAllByTopicType(TopicType.ARTIST)
                 .stream()
                 .map(topic -> {
@@ -39,7 +37,7 @@ public class TopicService {
                 .collect(toList());
     }
 
-    public List<AlbumDTO> getAllAlbums() {
+    public List<TopicDTO> getAllAlbums() {
         return topicRepository.findAllByTopicType(TopicType.ALBUM)
                 .stream()
                 .map(topic -> {
@@ -52,7 +50,7 @@ public class TopicService {
                 .collect(toList());
     }
 
-    public List<TrackDTO> getAllTracks() {
+    public List<TopicDTO> getAllTracks() {
         return topicRepository.findAllByTopicType(TopicType.TRACK)
                 .stream()
                 .map(topic -> {
@@ -64,21 +62,21 @@ public class TopicService {
                 })
                 .collect(toList());
     }
-    public ArtistDTO getArtistById(Long topicId) throws ParseException, SpotifyWebApiException, IOException {
+    public TopicDTO getArtistById(Long topicId) throws ParseException, SpotifyWebApiException, IOException {
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new TopicNotFoundException(topicId.toString()));
 
         return topicMapper.mapToArtist(topic);
     }
 
-    public AlbumDTO getAlbumById(Long topicId) throws ParseException, SpotifyWebApiException, IOException {
+    public TopicDTO getAlbumById(Long topicId) throws ParseException, SpotifyWebApiException, IOException {
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new TopicNotFoundException(topicId.toString()));
 
         return topicMapper.mapToAlbum(topic);
     }
 
-    public TrackDTO getTrackById(Long topicId) throws ParseException, SpotifyWebApiException, IOException {
+    public TopicDTO getTrackById(Long topicId) throws ParseException, SpotifyWebApiException, IOException {
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new TopicNotFoundException(topicId.toString()));
 
