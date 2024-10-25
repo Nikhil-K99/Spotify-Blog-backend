@@ -16,7 +16,7 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.example.SpotifySpring.enums.VoteType.UPVOTE;
+import static com.example.SpotifySpring.enums.VoteType.*;
 
 @Service
 @AllArgsConstructor
@@ -35,10 +35,25 @@ public class VoteService {
             throw new VoteAlreadyExistsException("You have already " + voteDTO.getVoteType().toString() + "d this post.");
         }
         if (UPVOTE.equals(voteDTO.getVoteType())) {
-            post.setVoteCount(post.getVoteCount() + 1);
+            if (voteByPostAndUser.isPresent() && voteByPostAndUser.get().getVoteType().equals(DOWNVOTE)) {
+                post.setVoteCount(post.getVoteCount() + 2);
+            } else {
+                post.setVoteCount(post.getVoteCount() + 1);
+            }
+        } else if (DOWNVOTE.equals(voteDTO.getVoteType())) {
+            if (voteByPostAndUser.isPresent() && voteByPostAndUser.get().getVoteType().equals(UPVOTE)) {
+                post.setVoteCount(post.getVoteCount() - 2);
+            } else {
+                post.setVoteCount(post.getVoteCount() - 1);
+            }
         } else {
-            post.setVoteCount(post.getVoteCount() - 1);
+            if (voteByPostAndUser.isPresent() && voteByPostAndUser.get().getVoteType().equals(UPVOTE)) {
+                post.setVoteCount(post.getVoteCount() - 1);
+            } else {
+                post.setVoteCount(post.getVoteCount() + 1);
+            }
         }
+
         voteRepository.save(voteMapper.map(voteDTO, post, spotifyAPIAuthService.getCurrentUser()));
         postRepository.save(post);
     }

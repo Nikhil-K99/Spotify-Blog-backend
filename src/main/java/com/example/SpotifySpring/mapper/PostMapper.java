@@ -11,12 +11,9 @@ import com.example.SpotifySpring.model.Vote;
 import com.example.SpotifySpring.repository.CommentRepository;
 import com.example.SpotifySpring.repository.VoteRepository;
 import com.example.SpotifySpring.service.SpotifyAPIAuthService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 import lombok.RequiredArgsConstructor;
 import org.apache.hc.core5.http.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
@@ -33,8 +30,8 @@ public class PostMapper {
     private final VoteRepository voteRepository;
     private final SpotifyAPIAuthService spotifyAPIAuthService;
     private final TopicMapper topicMapper;
-    private static final Logger logger = LoggerFactory.getLogger(PostMapper.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+//    private static final Logger logger = LoggerFactory.getLogger(PostMapper.class);
+//    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public Post map(PostRequestDTO postRequestDTO, Topic topic, User user) {
         Post post = new Post();
@@ -50,7 +47,7 @@ public class PostMapper {
 
     public PostResponseDTO mapToDTO(Post post) throws IOException, SpotifyWebApiException, ParseException {
 
-        logger.info("Mapping Post to PostResponseDTO");
+//        logger.info("Mapping Post to PostResponseDTO");
         PostResponseDTO postResponseDTO = new PostResponseDTO();
         postResponseDTO.setPostId(post.getPostId());
         postResponseDTO.setPostName(post.getPostName());
@@ -67,13 +64,13 @@ public class PostMapper {
         TopicDTO topicDTO = topicMapper.mapToDTO(post.getTopic());
         postResponseDTO.setTopicData(topicDTO);
 
-        try {
-            String json = objectMapper.writeValueAsString(postResponseDTO);
-            logger.info("Mapped DTO as JSON: {}", json);
-        } catch (Exception e) {
-            logger.error("Error serializing DTO", e);
-        }
-        logger.info("Successfully mapped Post to PostResponseDTO");
+//        try {
+//            String json = objectMapper.writeValueAsString(postResponseDTO);
+//            logger.info("Mapped DTO as JSON: {}", json);
+//        } catch (Exception e) {
+//            logger.error("Error serializing DTO", e);
+//        }
+//        logger.info("Successfully mapped Post to PostResponseDTO");
 
         return postResponseDTO;
     }
